@@ -6,9 +6,7 @@ query OffersContext_info($dateOverride: Time, $pageSize: Int) {
   ) {
     items {
       ...Item
-      __typename
     }
-    __typename
   }
 }
 
@@ -35,9 +33,9 @@ fragment Item on Item {
 
 fragment GameAssets on GameAssets{
     title
-    publisher
+
+}    publisher
     purchaseGameText
-}
 
 fragment OfferEligibility on OfferEligibility{
     isClaimed

@@ -40,7 +40,7 @@ async def cookies2client(cookie_file):
 async def pull_data(client,headers,payload):
     gql_url = "https://gaming.amazon.com/graphql"
     response = await client.post(gql_url, headers=headers, data=json.dumps(payload))
-    client.aclose()
+    await  client.aclose()
     return response.json()
 
 
@@ -48,11 +48,14 @@ if __name__ == '__main__':
     async def main():
         from pprint import pp
 
+    
         cliente,headers = await cookies2client('app/cookies.txt')
-        p = graphql2payload('app/data/graphql/offers.graphql')
+        p = graphql2payload('app/data/graphql/claimed_items_info.graphql')
 
         data = await pull_data(cliente,headers,p)
-        pp(data)
+
+        data = data['data']['inGameLoot']['items']
+        pp(data,indent=2,compact=True)
 
 
     loop = asyncio.get_event_loop()

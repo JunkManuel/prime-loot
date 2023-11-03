@@ -1,7 +1,7 @@
-import btelegram.build as build
+import tgram_bot.build as build
 
 from inspect import getmembers, isfunction
-import btelegram.functions as funcs
+import tgram_bot.functions as funcs
 
 import logging
 logging.basicConfig(

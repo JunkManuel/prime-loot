@@ -5,14 +5,13 @@ import tgram_bot.functions as funcs
 
 import logging
 logging.basicConfig(
-    level=logging.INFO,
     # format="%(asctime)s [%(levelname)s] %(msg)s",
     format="{asctime} [{levelname}] {message}",
     style="{",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-log = logging.getLogger()
+log = logging.getLogger(name="telegram-bot").setLevel(logging.WARNING)
 
 import nest_asyncio
 nest_asyncio.apply()

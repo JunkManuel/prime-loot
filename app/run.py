@@ -20,7 +20,7 @@ logging.basicConfig(
     ]
 )
 
-log = logging.getLogger(name="telegram-bot")
+log = logging.getLogger(name="main")
 log.setLevel(logging.WARNING)
 
 import nest_asyncio

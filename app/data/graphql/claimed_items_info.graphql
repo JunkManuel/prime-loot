@@ -1,0 +1,61 @@
+query OffersContext_info($dateOverride: Time, $pageSize: Int) {
+  inGameLoot: items(
+    collectionType: LOOT
+    dateOverride: $dateOverride
+    pageSize: $pageSize
+  ) {
+    items {
+      ...Item
+      __typename
+    }
+    __typename
+  }
+}
+
+fragment Item on Item {
+    game{
+        gameAssets: assets{
+            ...GameAssets
+        }
+    }
+    offers{
+        offerInfo: offerSelfConnection{
+            eligibility{
+                ...OfferEligibility
+            }
+            orderInformation{
+                ...OrderInfo
+            }
+        }
+    }
+    itemAssets: assets{
+        ...ItemAssets
+    }
+}
+
+fragment GameAssets on GameAssets{
+    title
+    publisher
+    purchaseGameText
+}
+
+fragment OfferEligibility on OfferEligibility{
+    isClaimed
+    canClaim
+    claimTime
+    offerState
+}
+
+fragment OrderInfo on OfferOrderInformation{
+    orderDate
+    orderState
+    claimCode
+}
+
+fragment ItemAssets on ItemAssets{
+    title
+    itemDetails
+    externalClaimLink
+    claimInstructions
+    redemptionPlatforms
+}

@@ -11,7 +11,8 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-log = logging.getLogger(name="telegram-bot").setLevel(logging.WARNING)
+log = logging.getLogger(name="telegram-bot")
+log.setLevel(logging.WARNING)
 
 import nest_asyncio
 nest_asyncio.apply()

@@ -1,6 +1,29 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
+class MarkdownV2:
+    def clearstr(text):
+        return text \
+            .replace('_', '\\_') \
+            .replace('*', '\\*') \
+            .replace('[', '\\[') \
+            .replace(']', '\\]') \
+            .replace('(', '\\(') \
+            .replace(')', '\\)') \
+            .replace('~', '\\~') \
+            .replace('`', '\\`') \
+            .replace('>', '\\>') \
+            .replace('#', '\\#') \
+            .replace('+', '\\+') \
+            .replace('-', '\\-') \
+            .replace('=', '\\=') \
+            .replace('|', '\\|') \
+            .replace('{', '\\{') \
+            .replace('}', '\\}') \
+            .replace('.', '\\.') \
+            .replace('!', '\\!') 
+
+
 async def test(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' show MarkdownV2 formatting '''
     await context.bot.send_message(
@@ -28,5 +51,7 @@ async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> 
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text='Claimed shit on amazon'
+        text='Claimed shit on amazon',
+        parse_mode=data['parse_mode']
     )
+

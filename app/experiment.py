@@ -10,7 +10,8 @@ gql_url = "https://gaming.amazon.com/graphql"
 logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger()
 
-with open('./data/graphql_operations/offers.graphql','r') as f: query = f.readlines()
+
+with open('app/data/graphql_operations/offers.graphql','r') as f: query = f.readlines()
 query_offers = "".join(query)
 
 offers_payload = {
@@ -31,7 +32,7 @@ async def claim_offer(offer_id: str, item: dict, client: httpx.AsyncClient, head
             return
         log.info(f"Collecting offer for {item['game']['assets']['title']}")
         
-        with open('./data/graphql_operations/claim.graphql','r') as f: query = f.readlines()
+        with open('app/data/graphql_operations/claim.graphql','r') as f: query = f.readlines()
         query_claim = "".join(query)
         
         claim_payload = {

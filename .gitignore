@@ -1,5 +1,7 @@
-# env variables / private info
-.env
+# logs / env variables && private info
+*.log
+
+*.env
 cookies.txt
 
 #python runtime info

@@ -81,7 +81,7 @@ if __name__ == "__main__":
         dest="cookies",
         help="Path to cookies.txt file",
         required=False,
-        default="cookies.txt",
+        default="app/cookies.txt",
     )
     parser.add_argument(
         "-l",
@@ -143,9 +143,9 @@ if __name__ == "__main__":
                 # use_legacy_playwright(cookie_file, publishers, headless)
             use_experimental_api(cookie_file)
             log.info("Finished Looting!\n")
-        except AuthException as ex:
-            log.error(ex)
-            sys.exit(1)
+        # except AuthException as ex:
+            # log.error(ex)
+            # sys.exit(1)
         except Exception as ex:
             log.error(ex)
             traceback.print_tb(ex.__traceback__)

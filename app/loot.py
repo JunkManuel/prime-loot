@@ -8,9 +8,10 @@ import http.cookiejar as cookiejar
 gql_url = "https://gaming.amazon.com/graphql"
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
-log = logging.getLogger()
+log = logging.getLogger("loot.py")
 log.setLevel(logging.INFO)
-log.addHandler(logging.FileHandler('app/data/loot.log',mode='w'))
+fh = logging.FileHandler('app/data/loot.log',mode='w+')
+log.addHandler(fh)
 
 with open('app/data/graphql/offers.graphql','r') as f: query = f.readlines()
 query_offers = "".join(query)
@@ -52,8 +53,8 @@ async def claim_offer(offer_id: str, item: dict, client: httpx.AsyncClient, head
         data = response.json()["data"]
 
         if data['placeOrders']['orderInformation']:
-            if data['placeOrders']['orderInformation']['claimCode']:
-                log.info(f"Granted code {data['placeOrders']['orderInformation']['claimCode']}")
+            if data['placeOrders']['orderInformation'][0]['claimCode']:
+                log.info(f"Granted code {data['placeOrders']['orderInformation'][0]['claimCode'][0]}")
 
         if data["placeOrders"]["error"] is not None:
             log.error(f"Error: {data['placeOrders']['error']}")
@@ -90,7 +91,7 @@ async def primelooter(cookie_file):
         )
         log.info('')
         log.info('*Finished Claims*')
-
+        fh.close()
 
 def run_async_primeloot(cookie_file):
     loop = asyncio.new_event_loop()

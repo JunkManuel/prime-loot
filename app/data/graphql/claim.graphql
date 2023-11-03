@@ -1,14 +1,3 @@
-fragment Place_Orders_Payload_Order_Information on OfferOrderInformation {
-  catalogOfferId
-  claimCode
-  entitledAccountId
-  entitledAccountName
-  id
-  orderDate
-  orderState
-  __typename
-}
-
 mutation placeOrdersDetailPage($input: PlaceOrdersInput!) {
   placeOrders(input: $input) {
     error {
@@ -21,4 +10,15 @@ mutation placeOrdersDetailPage($input: PlaceOrdersInput!) {
     }
     __typename
   }
+}
+
+fragment Place_Orders_Payload_Order_Information on OfferOrderInformation {
+  catalogOfferId
+  claimCode
+  entitledAccountId
+  entitledAccountName
+  id
+  orderDate
+  orderState
+  __typename
 }

@@ -8,7 +8,7 @@ from os import environ as env
 from functools import partial
 
 import logging
-log = logging.getLogger('tgram-build')
+log = logging.getLogger('tgram_bot.build.py')
 log.setLevel(logging.INFO)
 
 def bot(functions: dict) -> Application:

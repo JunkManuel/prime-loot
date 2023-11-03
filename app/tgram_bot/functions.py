@@ -4,24 +4,15 @@ from telegram.ext import ContextTypes
 class MarkdownV2:
     def clearstr(text):
         return text \
-            .replace('_', '\\_') \
-            .replace('*', '\\*') \
-            .replace('[', '\\[') \
-            .replace(']', '\\]') \
-            .replace('(', '\\(') \
-            .replace(')', '\\)') \
-            .replace('~', '\\~') \
-            .replace('`', '\\`') \
-            .replace('>', '\\>') \
-            .replace('#', '\\#') \
-            .replace('+', '\\+') \
-            .replace('-', '\\-') \
-            .replace('=', '\\=') \
-            .replace('|', '\\|') \
-            .replace('{', '\\{') \
-            .replace('}', '\\}') \
-            .replace('.', '\\.') \
-            .replace('!', '\\!') 
+            .replace('_', '\\_') .replace('*', '\\*') \
+            .replace('[', '\\[') .replace(']', '\\]') \
+            .replace('(', '\\(') .replace(')', '\\)') \
+            .replace('~', '\\~') .replace('`', '\\`') \
+            .replace('>', '\\>') .replace('#', '\\#') \
+            .replace('+', '\\+') .replace('-', '\\-') \
+            .replace('=', '\\=') .replace('|', '\\|') \
+            .replace('{', '\\{') .replace('}', '\\}') \
+            .replace('.', '\\.') .replace('!', '\\!') 
 
 
 async def test(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
@@ -47,11 +38,13 @@ async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) ->
 async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' loot things '''
     from experiment import run_async_primeloot
+    with open('app/data/loot.log', 'w') as f: f.write('')
     run_async_primeloot('app/cookies.txt')
-
-    await context.bot.send_message(
+    # with open('app/data/experiment.log', 'r') as f: data['loot_text'] = ''.join(f.readlines())
+    await context.bot.send_document(
         chat_id=update.effective_chat.id,
-        text='Claimed shit on amazon',
-        parse_mode=data['parse_mode']
+        document='app/data/loot.log'
+        # text=data['loot_text'].replace('.','\\.'),
+        # parse_mode=data['parse_mode']
     )
 

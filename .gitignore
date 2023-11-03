@@ -1,5 +1,6 @@
 # logs / env variables && private info
 *.log
+logs/
 
 *.env
 cookies.txt

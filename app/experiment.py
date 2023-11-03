@@ -9,7 +9,8 @@ gql_url = "https://gaming.amazon.com/graphql"
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 log = logging.getLogger()
-
+log.setLevel(logging.INFO)
+log.addHandler(logging.FileHandler('app/data/loot.log',mode='w'))
 
 with open('app/data/graphql_operations/offers.graphql','r') as f: query = f.readlines()
 query_offers = "".join(query)
@@ -50,11 +51,13 @@ async def claim_offer(offer_id: str, item: dict, client: httpx.AsyncClient, head
         response = await client.post(gql_url, headers=headers, data=json.dumps(claim_payload))
         data = response.json()["data"]
 
-        if item["grantsCode"]: log.info(f"\nGranted code {data['placeOrders']['orderInformation']['claimCode']}")
+        if data['placeOrders']['orderInformation']:
+            if data['placeOrders']['orderInformation']['claimCode']:
+                log.info(f"Granted code {data['placeOrders']['orderInformation']['claimCode']}")
 
         if data["placeOrders"]["error"] is not None:
             log.error(f"Error: {data['placeOrders']['error']}")
-    # else: log.info(f"{item['offers'][0]['offerSelfConnection']['claimInstructions']}") debugin data
+    # else: log.info(f"{item['offers'][0]['offerSelfConnection']['claimInstructions']}") debugin sheit
 
 
 async def primelooter(cookie_file):
@@ -78,11 +81,15 @@ async def primelooter(cookie_file):
         response = await client.post(gql_url, headers=json_headers, data=json.dumps(offers_payload))
         data = response.json()["data"]["inGameLoot"]["items"]
 
+        log.info('*Starting Claims*')
+        log.info('')
         # although insanely low, python WILL garbage collect running coroutines if their references
         # aren't stored somewhere, therefore we noqa the Flake8 issue yelling at us about it.
         coros = await asyncio.gather(  # noqa: F841
             *[claim_offer(item["offers"][0]["id"], item, client, json_headers) for item in data]
         )
+        log.info('')
+        log.info('*Finished Claims*')
 
 
 def run_async_primeloot(cookie_file):

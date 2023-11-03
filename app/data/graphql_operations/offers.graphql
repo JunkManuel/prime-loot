@@ -27,8 +27,9 @@ fragment Item on Item {
     ...Game
     __typename
   }
-  siblingExternalLinkAssets{
+  assets {
     claimInstructions
+    externalClaimLink
   }
   __typename
 }

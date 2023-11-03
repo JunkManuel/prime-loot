@@ -20,3 +20,12 @@ async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) ->
         text='_Welcome to the internet \.\.\._',
         parse_mode=data['parse_mode']
     )
+
+async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
+    ''' loot things '''
+    from primelooter import use_experimental_api
+    use_experimental_api('app/cookie.txt')
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text='Claimed shit on amazon'
+    )

@@ -1,0 +1,24 @@
+fragment Place_Orders_Payload_Order_Information on OfferOrderInformation {
+  catalogOfferId
+  claimCode
+  entitledAccountId
+  entitledAccountName
+  id
+  orderDate
+  orderState
+  __typename
+}
+
+mutation placeOrdersDetailPage($input: PlaceOrdersInput!) {
+  placeOrders(input: $input) {
+    error {
+      code
+      __typename
+    }
+    orderInformation {
+      ...Place_Orders_Payload_Order_Information
+      __typename
+    }
+    __typename
+  }
+}

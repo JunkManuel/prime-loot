@@ -1,0 +1,61 @@
+query OffersContext_Offers_And_Items($dateOverride: Time, $pageSize: Int) {
+  inGameLoot: items(
+    collectionType: LOOT
+    dateOverride: $dateOverride
+    pageSize: $pageSize
+  ) {
+    items {
+      ...Item
+      __typename
+    }
+    __typename
+  }
+}
+
+fragment Item on Item {
+  id
+  isDirectEntitlement
+  requiresLinkBeforeClaim
+  grantsCode
+  isDeepLink
+  isFGWP
+  offers {
+    ...Item_Offer
+    __typename
+  }
+  game {
+    ...Game
+    __typename
+  }
+  siblingExternalLinkAssets{
+    claimInstructions
+  }
+  __typename
+}
+
+
+fragment Item_Offer on Offer {
+  id
+  offerSelfConnection {
+    eligibility {
+      ...Item_Offer_Eligibility
+      __typename
+    }
+    __typename
+  }
+  __typename
+}
+
+fragment Item_Offer_Eligibility on OfferEligibility {
+  isClaimed
+  canClaim
+  missingRequiredAccountLink
+}
+
+fragment Game on GameV2 {
+  id
+  assets {
+    title
+    publisher
+  }
+}

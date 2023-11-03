@@ -83,3 +83,8 @@ async def primelooter(cookie_file):
         coros = await asyncio.gather(  # noqa: F841
             *[claim_offer(item["offers"][0]["id"], item, client, json_headers) for item in data]
         )
+
+
+def run_async_primeloot(cookie_file):
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(primelooter(cookie_file))

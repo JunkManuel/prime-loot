@@ -23,8 +23,9 @@ async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) ->
 
 async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' loot things '''
-    from primelooter import use_experimental_api
-    use_experimental_api('app/cookie.txt')
+    from experiment import run_async_primeloot
+    run_async_primeloot('app/cookies.txt')
+
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text='Claimed shit on amazon'

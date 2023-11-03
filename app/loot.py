@@ -12,7 +12,7 @@ log = logging.getLogger()
 log.setLevel(logging.INFO)
 log.addHandler(logging.FileHandler('app/data/loot.log',mode='w'))
 
-with open('app/data/graphql_operations/offers.graphql','r') as f: query = f.readlines()
+with open('app/data/graphql/offers.graphql','r') as f: query = f.readlines()
 query_offers = "".join(query)
 
 offers_payload = {
@@ -33,7 +33,7 @@ async def claim_offer(offer_id: str, item: dict, client: httpx.AsyncClient, head
             return
         log.info(f"Collecting offer for {item['game']['assets']['title']}")
         
-        with open('app/data/graphql_operations/claim.graphql','r') as f: query = f.readlines()
+        with open('app/data/graphql/claim.graphql','r') as f: query = f.readlines()
         query_claim = "".join(query)
         
         claim_payload = {

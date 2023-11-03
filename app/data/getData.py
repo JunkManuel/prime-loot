@@ -1,7 +1,6 @@
 import httpx
 import json
 import asyncio
-import nest_asyncio; nest_asyncio.apply()
 import re
 import logging
 import http.cookiejar as cookiejar
@@ -48,12 +47,13 @@ async def main():
     from pprint import pp
 
     gql_url = "https://gaming.amazon.com/graphql"
-    p = graphql2payload('app/data/graphql_operations/offers.graphql')
+    p = graphql2payload('app/data/graphql/offers.graphql')
     
     cliente,headers = await cookies2client('app/cookies.txt')
     data = await pull_data(cliente,gql_url,headers,p)
 
     pp(data)
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

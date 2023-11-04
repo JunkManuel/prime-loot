@@ -93,6 +93,7 @@ async def primelooter(cookie_file):
         log.info('*Finished Claims*')
         fh.close()
 
-def run_async_primeloot(cookie_file):
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(primelooter(cookie_file))
+if __name__ == '__main__':
+    def run_async_primeloot(cookie_file):
+        loop = asyncio.new_event_loop()
+        loop.run_until_complete(primelooter(cookie_file))

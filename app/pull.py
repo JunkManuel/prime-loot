@@ -1,6 +1,6 @@
 from data.getData import cookies2client,graphql2payload, pull_data
 import logging
-import asyncio
+
 
 log = logging.getLogger('pull')
 fh = logging.FileHandler('app/data/pull.log',mode='w')
@@ -58,9 +58,12 @@ async def pull_orders_info(fdata: dict = None):
     
     fh.close()
 
-def run_async_pullInfoClaimed():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(pull_orders_info())
+
 
 if __name__ == '__main__':
+    import asyncio
+    def run_async_pullInfoClaimed():
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(pull_orders_info())
+        
     run_async_pullInfoClaimed()

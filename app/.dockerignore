@@ -4,21 +4,18 @@
 
 # logs / env variables && private info
 *.log
-logs/
 
 *.env
 
 #python runtime info
 __pycache__/
-
 #vscode thingis
 .vscode
+# vscode files
+launch.json
 
 # schema
 schema/
 
 # tests
 tests/
-
-# vscode files
-launch.json

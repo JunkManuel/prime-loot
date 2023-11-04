@@ -3,6 +3,7 @@ from telegram.ext import ContextTypes
 import logging
 
 log = logging.getLogger("tgram_bot.functions.py")
+log.setLevel(logging.INFO)
 log_exec = "Executing \\{} chat command ..."
 log_fin = "Fin \\{} "
 
@@ -69,7 +70,7 @@ async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: d
     log.info(log_fin.format("pull_claimed"))
 
 
-async def log(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -> None:
+async def log_file(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -> None:
     ''' get latest log file '''
     log.info(log_exec.format("log"))
 

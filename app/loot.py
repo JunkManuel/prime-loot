@@ -82,15 +82,11 @@ async def primelooter(cookie_file):
         response = await client.post(gql_url, headers=json_headers, data=json.dumps(offers_payload))
         data = response.json()["data"]["inGameLoot"]["items"]
 
-        log.info('*Starting Claims*')
-        log.info('')
         # although insanely low, python WILL garbage collect running coroutines if their references
         # aren't stored somewhere, therefore we noqa the Flake8 issue yelling at us about it.
         coros = await asyncio.gather(  # noqa: F841
             *[claim_offer(item["offers"][0]["id"], item, client, json_headers) for item in data]
         )
-        log.info('')
-        log.info('*Finished Claims*')
         fh.close()
 
 if __name__ == '__main__':

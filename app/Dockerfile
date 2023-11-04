@@ -5,6 +5,7 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY *.py ./
+COPY ./ ./
+
 COPY cookies.txt cookies.txt
-CMD [ "python", "primelooter.py" , "-c cookies.txt" ]
+CMD [ "python", "app" ]

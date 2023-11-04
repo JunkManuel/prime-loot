@@ -9,7 +9,7 @@ import sys
 
 logging.basicConfig(
     # format="%(asctime)s [%(levelname)s] %(msg)s",
-    format="({name}) {asctime} [{levelname}] {message}",
+    format="{name:<40} ({asctime}) [{levelname}] {message}",
     style="{",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
@@ -29,7 +29,10 @@ import nest_asyncio
 nest_asyncio.apply()
 
 def run_bot():
-    functions = dict(getmembers(funcs,isfunction))
+    def iscommand(f):
+        return isfunction(f) and ('wrapper' not in f.__name__)
+    
+    functions = dict(getmembers(funcs,iscommand))
     build.bot(functions).run_polling()
 
 log.info("Starting ...")

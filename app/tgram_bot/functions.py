@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import ContextTypes
+import tgram_bot.permission_wraps as p
 import logging
 
 log = logging.getLogger("tgram_bot.functions.py")
@@ -7,7 +8,7 @@ log.setLevel(logging.INFO)
 log_exec = "Executing \\{} chat command ..."
 log_fin = "Fin \\{} "
 
-
+@p.unrestricted
 async def test(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' show MarkdownV2 formatting '''
     log.info(log_exec.format("test"))
@@ -24,6 +25,7 @@ async def test(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> 
     
     log.info(log_fin.format("test"))
 
+@p.unrestricted
 async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' welcome mesage '''
     log.info(log_exec.format("start"))
@@ -36,6 +38,7 @@ async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) ->
 
     log.info(log_fin.format("start"))
 
+@p.owner
 async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' loot things '''
     log.info(log_exec.format("loot"))
@@ -53,6 +56,7 @@ async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> 
 
     log.info(log_fin.format("loot"))
 
+@p.owner
 async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' get info of already looted offers '''
     log.info(log_exec.format("pull_claimed"))
@@ -69,7 +73,7 @@ async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: d
 
     log.info(log_fin.format("pull_claimed"))
 
-
+@p.owner
 async def log_file(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -> None:
     ''' get latest log file '''
     log.info(log_exec.format("log"))

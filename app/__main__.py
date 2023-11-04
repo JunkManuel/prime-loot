@@ -14,7 +14,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
         handlers.RotatingFileHandler(
-            'app/logs/tgram_bot_run.log',
+            'app/logs/run.log',
             maxBytes=10*1024*1024,
             backupCount=10
         ),
@@ -22,7 +22,7 @@ logging.basicConfig(
     ]
 )
 
-log = logging.getLogger("main")
+log = logging.getLogger("app")
 log.setLevel(logging.WARNING)
 
 import nest_asyncio
@@ -32,4 +32,7 @@ def run_bot():
     functions = dict(getmembers(funcs,isfunction))
     build.bot(functions).run_polling()
 
-run_bot()
+log.info("Starting ...")
+try: run_bot()
+except Exception as ex: log.error(ex)
+log.info("Exiting ...")

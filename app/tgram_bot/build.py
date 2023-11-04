@@ -29,7 +29,8 @@ def bot(functions: dict) -> Application:
     
     async def bot_set_commands(app: Application, functions: dict):
         commands = []
-        for key,value in zip(functions.keys(),functions.values()):
+        functions = dict(sorted(functions.items()))
+        for key,value in functions.items():
             commands.append(BotCommand(key,value.__doc__))
         
         async with app: await app.bot.set_my_commands(commands)

@@ -9,7 +9,7 @@ import sys
 
 logging.basicConfig(
     # format="%(asctime)s [%(levelname)s] %(msg)s",
-    format="{name:<40} ({asctime}) [{levelname}] {message}",
+    format="({asctime}) {name:<30} [{levelname:>8}] --- {message}",
     style="{",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
@@ -37,5 +37,5 @@ def run_bot():
 
 log.info("Starting ...")
 try: run_bot()
-except Exception as ex: log.error(ex)
+except Exception as ex: logging.exception(ex)
 log.info("Exiting ...")

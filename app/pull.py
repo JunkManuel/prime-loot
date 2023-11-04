@@ -19,12 +19,11 @@ async def pull_orders_info(fdata: dict = None):
         data = await pull_data(client,headers,payload)
     except FileNotFoundError as err:
         log.error('Breaking exception: Cannot Continue')
-        log.exception(err)
         fh.close()
         return
     except Exception as ex:
         log.error('Unknown exception')
-        log.exception(ex)
+        logging.exception(ex)
         fh.close()
         return
 
@@ -43,7 +42,7 @@ async def pull_orders_info(fdata: dict = None):
                     orderInformation = orderInformation[0]
                     if orderInformation['claimCode'] is not None:
                         orderInformation['claimCode'] = orderInformation['claimCode'].replace('-','\\-')
-                        log.info(f" [{orderInformation['claimCode']}]({itemAssets['externalClaimLink']}) ")
+                        log.info(f"||[{orderInformation['claimCode']}]({itemAssets['externalClaimLink']})||")
 
                 # log.info(f"isClaimed -> {item['offers'][0]['offerInfo']['eligibility']['isClaimed']}")
             log.info('')
@@ -52,7 +51,6 @@ async def pull_orders_info(fdata: dict = None):
         log.error('Data does not contain expected information')
         if 'error' in data: log.error(data['error'])
         log.error(data)
-        log.exception(err)
         fh.close()
         return
     

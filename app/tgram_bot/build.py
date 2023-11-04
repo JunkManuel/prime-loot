@@ -13,7 +13,9 @@ log.setLevel(logging.INFO)
 
 def bot(functions: dict) -> Application:
     TOKEN = env['TGRAM_TOKEN']
-    app = ApplicationBuilder().token(TOKEN).build()
+    
+    try :app = ApplicationBuilder().token(TOKEN).build()
+    except Exception as ex: logging.exception(ex)
 
     # Necesary data for 1 or more handle functions
     options = {
@@ -37,7 +39,6 @@ def bot(functions: dict) -> Application:
 
     log.info('Setting Command List ...')
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(bot_set_commands(app,functions))    
-
+    loop.run_until_complete(bot_set_commands(app,functions))
 
     return app

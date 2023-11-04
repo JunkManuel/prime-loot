@@ -37,14 +37,26 @@ async def start(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) ->
 
 async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
     ''' loot things '''
-    from loot import run_async_primeloot
-    run_async_primeloot('app/cookies.txt')
-    # with open('app/data/experiment.log', 'r') as f: data['loot_text'] = ''.join(f.readlines())
+    from loot import primelooter
+    await primelooter('app/cookies.txt')
+    # with open('app/data/loot.log', 'r') as f: data['loot_text'] = ''.join(f.readlines())
 
     await context.bot.send_document(
         chat_id=update.effective_chat.id,
         document='app/data/loot.log'
         # text=data['loot_text'].replace('.','\\.'),
         # parse_mode=data['parse_mode']
+    )
+
+async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
+    ''' get info of already looted offers '''
+    from pull import pull_orders_info
+    await pull_orders_info()
+    with open('app/data/pull.log','r') as f: data['pull_text'] = ''.join(f.readlines())
+
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=data['pull_text'],
+        parse_mode=data['parse_mode']
     )
 

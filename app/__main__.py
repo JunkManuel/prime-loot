@@ -7,7 +7,7 @@ import logging
 import sys
 logging.basicConfig(
     # format="%(asctime)s [%(levelname)s] %(msg)s",
-    format="{asctime} [{levelname}] {message}",
+    format="({name}) {asctime} [{levelname}] {message}",
     style="{",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
@@ -20,7 +20,7 @@ logging.basicConfig(
     ]
 )
 
-log = logging.getLogger(name="main")
+log = logging.getLogger("main")
 log.setLevel(logging.WARNING)
 
 import nest_asyncio

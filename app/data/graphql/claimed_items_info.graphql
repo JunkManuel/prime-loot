@@ -33,9 +33,7 @@ fragment Item on Item {
 
 fragment GameAssets on GameAssets{
     title
-
-}    publisher
-    purchaseGameText
+}
 
 fragment OfferEligibility on OfferEligibility{
     isClaimed

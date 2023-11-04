@@ -1,2 +1,0 @@
-cat log | grep INFO | cut -f 2 -d ']' | sed 's/ //' | apprise -t INFO tgram://6423678341:AAFhm5dsubVaGP3fd1SHwyFMUAhDyk8unxE
-

@@ -1,0 +1,25 @@
+# git repo
+.git/
+.gitignore
+
+# logs / env variables && private info
+*.log
+logs/
+
+*.env
+cookies.txt
+
+#python runtime info
+__pycache__/
+
+#vscode thingis
+.vscode
+
+# schema
+schema/
+
+# tests
+tests/
+
+# vscode files
+launch.json

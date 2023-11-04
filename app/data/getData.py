@@ -47,15 +47,30 @@ async def pull_data(client,headers,payload):
 if __name__ == '__main__':
     async def main():
         from pprint import pp
+        import logging
+        import traceback
 
-    
-        cliente,headers = await cookies2client('app/cookies.txt')
+        logging.basicConfig(
+            # format="%(asctime)s [%(levelname)s] %(msg)s",
+            format="({name}) {asctime} [{levelname}] {message}",
+            style="{",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+
+        log = logging.getLogger('test')
+        log.setLevel(logging.INFO)
+
+        try: cliente,headers = await cookies2client('app/cookie.txt')
+        except FileNotFoundError as ex:
+            log.exception(ex)
+            return
+
         p = graphql2payload('app/data/graphql/claimed_items_info.graphql')
 
-        data = await pull_data(cliente,headers,p)
+        # data = await pull_data(cliente,headers,p)
 
-        data = data['data']['inGameLoot']['items']
-        pp(data,indent=2,compact=True)
+        # data = data['data']['inGameLoot']['items']
+        # pp(data,indent=2,compact=True)
 
 
     loop = asyncio.get_event_loop()

@@ -18,6 +18,7 @@ async def pull_orders_info(fdata: dict = None):
         })
         data = await pull_data(client,headers,payload)
     except FileNotFoundError as err:
+        log.error(err.strerror)
         log.error('Breaking exception: Cannot Continue')
         fh.close()
         return

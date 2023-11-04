@@ -17,10 +17,12 @@ def log_wrapper(f):
 
         try: await f(update,context,*args,**kwargs)
         except t_error.BadRequest as br:
-            log.error(f'{br.message}')
+            log.error(f'{br.args[0]}')
             try: 
                 for text,index in enumerate(context.user_data['message'].split('\n')) :log.error(f'{index} {text= }')
             except KeyError: log.error('message not in context.user_data[\'message\']')
+            return
+        
         log.info(f'*Finished tgram.function.{f.__name__}*')
     return wrap
 
@@ -117,12 +119,13 @@ async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: d
 
     context.user_data['message'] = context.user_data['message'].split('\n\n')
 
-    for text in context.user_data['message']:
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text,
-            parse_mode=data['parse_mode']
-        )
+    for context.user_data['message'] in (context.user_data['message']):
+        if context.user_data['message']:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=context.user_data['message'],
+                parse_mode=data['parse_mode']
+            )
 
 @wr.personal
 @wr.owner

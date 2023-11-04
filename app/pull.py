@@ -29,6 +29,7 @@ async def pull_orders_info(fdata: dict = None):
 
     try:
         items = data['data']['inGameLoot']['items']
+        items = sorted(items,key=lambda i: bool(i['offers'][0]['offerInfo']['orderInformation']))
         for item in items:
             if item['offers'][0]['offerInfo']['eligibility']['isClaimed']:
                 gameAssets = item['game']['gameAssets']

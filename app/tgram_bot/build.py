@@ -17,8 +17,15 @@ def bot(functions: dict) -> Application:
     try :app = ApplicationBuilder().token(TOKEN).build()
     except Exception as ex: logging.exception(ex)
 
+
     # Necesary data for 1 or more handle functions
     options = {
+        'trans_table':str.maketrans({
+            '.':r'\.', '>':r'\>',
+            '[':r'\[',']':r'\]',
+            '(':r'\(',')':r'\)',
+            '-':r'\-','=':r'\='
+        }),
         'app': app,
         'parse_mode': 'MarkdownV2',
     }

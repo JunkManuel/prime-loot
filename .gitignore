@@ -21,3 +21,4 @@ tests/
 launch.json
 
 dockercontainer/
+compose.yaml

@@ -1,4 +1,5 @@
 from data.getData import cookies2client,graphql2payload, pull_data
+from pprint import pformat
 import logging
 
 
@@ -59,7 +60,7 @@ async def pull_orders_info(**fdata):
     except KeyError as err:
         log.error('Data does not contain expected information')
         if 'error' in data: log.error(data['error'])
-        log.error(data)
+        logging.exception(pformat(data))
         fh.close()
         return
     

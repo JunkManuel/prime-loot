@@ -8,8 +8,11 @@ fh = logging.FileHandler('app/data/pull.log',mode='w')
 log.setLevel(logging.INFO)
 log.addHandler(fh)
 
-async def pull_orders_info(fdata: dict = None):
-    if fdata is None: fdata = {}
+async def pull_orders_info(**fdata):
+    # Declare defaults
+    if 'key' not in fdata: fdata |= {
+        'key': None
+    }
     
     try:
         client,headers = await cookies2client('app/cookies.txt')
@@ -31,6 +34,10 @@ async def pull_orders_info(fdata: dict = None):
     try:
         items = data['data']['inGameLoot']['items']
         items = sorted(items,key=lambda i: bool(i['offers'][0]['offerInfo']['orderInformation']))
+        if fdata['key']: 
+            items = (item for item in items if fdata['key'] in item['game']['gameAssets']['title'])
+            log.info(f"Keyword = {fdata['key']}")
+        
         for item in items:
             if item['offers'][0]['offerInfo']['eligibility']['isClaimed']:
                 gameAssets = item['game']['gameAssets']

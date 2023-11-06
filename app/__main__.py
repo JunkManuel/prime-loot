@@ -1,6 +1,8 @@
 import tgram_bot.build as build
 
 from inspect import getmembers, isfunction
+from os import environ as env
+import asyncio
 import tgram_bot.functions as funcs
 
 import logging
@@ -23,19 +25,55 @@ logging.basicConfig(
 )
 
 log = logging.getLogger("app")
-log.setLevel(logging.WARNING)
+log.setLevel(logging.INFO)
 
-import nest_asyncio
-nest_asyncio.apply()
+# import nest_asyncio
+# nest_asyncio.apply()
 
-def run_bot():
+async def send_starting(bot: build.Application):
+    async with bot:
+        await bot.send_message(
+            chat_id = env['TGRAM_STATUS_CHAT_ID'],
+            text='Starting ...'
+        )
+
+# async def send_closing(bot: build.Application):
+    # async with bot:
+        # await bot.send_message(
+            # chat_id = env['TGRAM_STATUS_CHAT_ID'],
+            # text='Closing ...'
+        # )
+
+async def send_warning_message(bot: build.Application):
+    async with bot:
+        await bot.send_message(
+            chat_id = env['TGRAM_STATUS_CHAT_ID'],
+            text= "_Something went *VERY* wrong \.\.\._",
+            parse_mode= "MarkdownV2"
+        )
+
+def get_app():
     def iscommand(f):
         return isfunction(f) and ('wrapper' not in f.__name__)
     
     functions = dict(getmembers(funcs,iscommand))
-    build.bot(functions).run_polling()
+    return build.app(functions)
 
+def get_bot():
+    return build.bot()
+
+app = get_app()
+loop = asyncio.get_event_loop()
+
+    
 log.info("Starting ...")
-try: run_bot()
-except Exception as ex: logging.exception(ex)
-log.info("Exiting ...")
+loop.run_until_complete(send_starting(get_bot()))
+
+try: app.run_polling()
+
+except Exception as ex:
+    loop.run_until_complete(send_warning_message(get_bot()))
+    logging.exception(ex)
+
+# log.info("Exiting ...")
+# loop.run_until_complete(send_closing(get_bot()))

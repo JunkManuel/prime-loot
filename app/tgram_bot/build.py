@@ -1,5 +1,5 @@
 import asyncio
-from telegram import Update, BotCommand
+from telegram import Update, BotCommand, Bot
 from telegram.ext import ApplicationBuilder, \
     ContextTypes, Application, \
     CommandHandler, MessageHandler
@@ -11,10 +11,10 @@ import logging
 log = logging.getLogger('tgram_bot.build.py')
 log.setLevel(logging.INFO)
 
-def bot(functions: dict) -> Application:
+def app(functions: dict) -> Application:
     TOKEN = env['TGRAM_TOKEN']
     
-    try :app = ApplicationBuilder().token(TOKEN).build()
+    try: app = ApplicationBuilder().token(TOKEN).build()
     except Exception as ex: logging.exception(ex)
 
 
@@ -49,3 +49,9 @@ def bot(functions: dict) -> Application:
     loop.run_until_complete(bot_set_commands(app,functions))
 
     return app
+
+def bot():
+    try: bot = Bot(token=TOKEN)
+    except Exception as ex: logging.exception(ex)
+
+    return bot

@@ -1,12 +1,13 @@
 import httpx
 import json
 import asyncio
+import aiofiles
 import re
 import logging
 import http.cookiejar as cookiejar
 
-def graphql2payload(file,variables = {},extensions = {}):
-    with open(file,'r') as f: query = f.readlines()
+async def graphql2payload(file,variables = {},extensions = {}):
+    async with aiofiles.open(file,'r') as f: query = await f.readlines()
     op_name = query[0].split(' ')[1].split('(')[0]
     query = "".join(query)
 

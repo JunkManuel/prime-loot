@@ -1,6 +1,7 @@
 from data.getData import cookies2client,graphql2payload, pull_data
 from pprint import pformat
 import logging
+import asyncio
 
 
 log = logging.getLogger('pull')
@@ -11,16 +12,11 @@ log.addHandler(fh)
 
 async def pull_orders_info(**fdata):
     # Declare defaults
-    if 'key' not in fdata: fdata |= {
-        'key': None
-    }
-    
     try:
-        client,headers = await cookies2client('app/cookies.txt')
-        payload = graphql2payload('app/data/graphql/claimed_items_info.graphql',variables={
-            'pageSize': 9999
-        })
-        data = await pull_data(client,headers,payload)
+        cookies2client_task = asyncio.create_task(cookies2client('app/cookies.txt'))
+        graphql2payload_task = asyncio.create_task(graphql2payload('app/data/graphql/claimed_items_info.graphql',variables={
+                'pageSize': 9999
+            }))
     except FileNotFoundError as err:
         log.error(err.strerror)
         log.error('Breaking exception: Cannot Continue')
@@ -31,8 +27,17 @@ async def pull_orders_info(**fdata):
         logging.exception(ex)
         fh.close()
         return
+    
+    if 'key' not in fdata: fdata |= {
+        'key': None
+    }
+
+    client,headers = await cookies2client_task
+    payload = await graphql2payload_task
+    pull_data_task = asyncio.create_task(pull_data(client,headers,payload))
 
     try:
+        data = await pull_data_task
         items = data['data']['inGameLoot']['items']
         items = sorted(items,key=lambda i: bool(i['offers'][0]['offerInfo']['orderInformation']))
         if fdata['key']: 
@@ -69,9 +74,8 @@ async def pull_orders_info(**fdata):
 
 
 if __name__ == '__main__':
-    import asyncio
     def run_async_pullInfoClaimed():
         loop = asyncio.get_event_loop()
         loop.run_until_complete(pull_orders_info())
-        
+
     run_async_pullInfoClaimed()

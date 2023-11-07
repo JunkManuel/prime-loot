@@ -1,0 +1,34 @@
+query query($dateOverride: Time, $pageSize: Int) {
+    Games: items(
+        dateOverride: $dateOverride
+        pageSize: $pageSize
+        collectionType: FREE_GAMES
+    )   {
+        items {
+            ...Item
+        }
+    }
+}
+
+fragment Item on Item {
+    id
+    isFGWP
+    game{
+        ...Game
+        __typename
+    }
+    offers{
+        id
+    }
+    assets{
+        externalClaimLink
+        claimInstructions
+    }
+}
+
+fragment Game on GameV2 {
+    id
+    assets{
+        title
+    }
+}

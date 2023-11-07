@@ -1,0 +1,14 @@
+mutation mutation($input: PlaceOrdersInput!){
+    placeOrders(input: $input){
+        error{
+            code
+        }
+        orderInformation{
+            ...Place_Orders_Payload_Order_Information
+        }
+    }
+}
+
+fragment Place_Orders_Payload_Order_Information on OfferOrderInformation {
+    id
+}

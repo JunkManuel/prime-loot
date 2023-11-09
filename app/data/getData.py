@@ -7,14 +7,18 @@ import logging
 import http.cookiejar as cookiejar
 
 async def graphql2payload(file,variables = {},extensions = {}):
-    async with aiofiles.open(file,'r') as f: query = await f.readlines()
+    async with aiofiles.open(file,'r') as f:
+        query_task = asyncio.create_task(f.readlines())
+        payload = {
+            "variables": variables,
+            "extensions": extensions,
+        }
+        query = await query_task
     op_name = query[0].split(' ')[1].split('(')[0]
     query = "".join(query)
 
-    payload = {
+    payload |= {
         "operationName": op_name,
-        "variables": variables,
-        "extensions": extensions,
         "query": query,
     }
     return payload
@@ -26,13 +30,15 @@ async def cookies2client(cookie_file):
     base_headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
     }
+    client_task = asyncio.create_task(client.get("https://gaming.amazon.com/home", headers=base_headers))
+
     json_headers = base_headers | {
         "Content-Type": "application/json",
     }
     for _c in jar:
         client.cookies.jar.set_cookie(_c)
     
-    html_body = (await client.get("https://gaming.amazon.com/home", headers=base_headers)).text
+    html_body = (await client_task).text
     matches = re.findall(r"name='csrf-key' value='(.*)'", html_body)
     json_headers["csrf-token"] = matches[0]
     

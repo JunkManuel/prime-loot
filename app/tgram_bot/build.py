@@ -51,6 +51,7 @@ def app(functions: dict) -> Application:
     return app
 
 def bot():
+    TOKEN = env['TGRAM_TOKEN']
     try: bot = Bot(token=TOKEN)
     except Exception as ex: logging.exception(ex)
 

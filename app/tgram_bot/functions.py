@@ -4,6 +4,7 @@ from telegram.ext import ContextTypes
 import tgram_bot.functions_wraps as wr
 import logging
 import functools as ft
+import asyncio
 
 
 #Logging shit and giggles
@@ -107,14 +108,11 @@ async def whoami(update:Update, context:ContextTypes.DEFAULT_TYPE, data: dict) -
         f'{chatid = }'
     ).translate(data['trans_table'])
     
-    try:
-        await context.bot.send_message(
-            chat_id=chatid,
-            text=context.user_data['message'],
-            parse_mode=data['parse_mode']
-        )
-    except t_error.BadRequest as br:
-        log.error()
+    await context.bot.send_message(
+        chat_id=chatid,
+        text=context.user_data['message'],
+        parse_mode=data['parse_mode']
+    )
 
 @wr.personal
 @wr.owner
@@ -154,7 +152,7 @@ async def loot_fgwp(update:Update, context:ContextTypes.DEFAULT_TYPE, data: dict
 @wr.owner
 @log_wrapper
 async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
-    ''' usage: /pull_claimed [key] --- Get info of all/[key]-named looted offers '''
+    ''' usage: /pull_claimed ¿[type]? [key] --- Get info of all/[key]-named looted offers within [type] offers '''
 
     from pull import pull_orders_info
     context.user_data['find_key'] = None

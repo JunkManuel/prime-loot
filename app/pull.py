@@ -19,7 +19,7 @@ async def pull_orders_info(**fdata):
             }))
     except FileNotFoundError as err:
         log.error(err.strerror)
-        log.error('Breaking exception: Cannot Continue')
+        log.error('FileNotFoundError: Cannot Continue')
         fh.close()
         return
     except Exception as ex:

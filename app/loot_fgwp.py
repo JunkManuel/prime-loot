@@ -7,11 +7,9 @@ import sys
 
 log = logging.getLogger('loot_fgwp.py')
 fh = logging.FileHandler('app/data/loot_fgwp.log',mode='w')
-sh = logging.StreamHandler(sys.stdout)
 
 log.setLevel(logging.INFO)
 log.addHandler(fh)
-log.addHandler(sh)
 
 async def claim(offer_id,item):
     cookies2client_task = asyncio.create_task(cookies2client('app/cookies.txt'))
@@ -35,7 +33,7 @@ async def claim(offer_id,item):
     if 'error' not in data:
         log.info(f"Claimed *{item['game']['assets']['title']}*")
         if 'gog' in item['assets']['claimInstructions'].lower():
-            log.info(f"GOG\| [claimLink]({item['assets']['externalClaimLink']})")
+            log.info(f"GOG\|\- [claimLink]({item['assets']['externalClaimLink']})")
     else:
         log.error('Mutation on PrimeGaming Database returned error')
         log.error('Returned payload: ')

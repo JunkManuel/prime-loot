@@ -19,6 +19,12 @@ fragment Item on Item {
     }
     offers{
         id
+        offerSelfConnection {
+            eligibility {
+                isClaimed
+                canClaim
+            }
+        }
     }
     assets{
         externalClaimLink

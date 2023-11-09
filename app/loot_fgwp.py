@@ -42,9 +42,9 @@ async def claim(offer_id,item):
         for i in pformat(data).split('\n'): log.error(i)
     
 
-async def main():
+async def main(cookies_file: 'file'):
     try:
-        cookies2client_task = asyncio.create_task(cookies2client('app/cookies.txt'))
+        cookies2client_task = asyncio.create_task(cookies2client(cookies_file))
         graphql2payload_task = asyncio.create_task(graphql2payload('app/data/graphql/offers_fgwp.graphql',variables={
                 'pageSize': 9999
             }))
@@ -68,20 +68,22 @@ async def main():
         data = await pull_data_task
         for item in data['data']['Games']['items']:
             for offer in item['offers']:
-                offers_id.append(offer['id'])
+                if offer['offerSelfConnection']['eligibility']['isClaimed'] :
+                    log.info(f"*{item['game']['assets']['title']}* is already Claimed")
+                else: offers_id.append(offer['id'])
 
         await asyncio.gather(
             *[claim(offer_id,item) for offer_id,item in zip(offers_id,data['data']['Games']['items'])]
         )
-        fh.close()
 
-    
     except Exception as ex:
         log.error('Unknown exception')
         logging.exception(ex)
         fh.close()
         return
+    
+    fh.close()
 
 if __name__=='__main__':
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    loop.run_until_complete(main('app/cookies.txt'))

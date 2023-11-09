@@ -133,6 +133,23 @@ async def loot(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> 
         # parse_mode=data['parse_mode']
     )
 
+
+@wr.personal
+@wr.owner
+@log_wrapper
+async def loot_fgwp(update:Update, context:ContextTypes.DEFAULT_TYPE, data: dict) -> None:
+    ''' Usage: /loot_fgwp --- Loot Games '''
+
+    import loot_fgwp
+    await loot_fgwp.main('app/cookies.txt')
+
+    await context.bot.send_document(
+        chat_id=update.effective_chat.id,
+        document='app/data/loot_fgwp.log'
+    )
+
+
+
 @wr.personal
 @wr.owner
 @log_wrapper

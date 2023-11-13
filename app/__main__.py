@@ -57,16 +57,13 @@ def get_app():
         return isfunction(f) and ('wrapper' not in f.__name__) and ('menu' not in f.__name__)
     
     functions = dict(getmembers(funcs,iscommand))
-    return build.app(functions)
+    return build.app(functions,funcs.__callbackqueryfunctions__)
 
 def get_bot():
     return build.bot()
 
 app = get_app()
 loop = asyncio.get_event_loop()
-
-from telegram.ext import CallbackQueryHandler
-app.add_handler(CallbackQueryHandler(funcs.pull_loot_menu_iGL, pattern='iGL'))
 
 log.info("Starting ...")
 loop.run_until_complete(send_starting(get_bot()))

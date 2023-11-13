@@ -56,6 +56,8 @@ def log_wrapper(f):
 
 # ------------------------------------------------------------------------------------------------------------
 
+__callbackqueryfunctions__ = dict()
+
 # Tha real functions
 # Struct: 
 #   @wr.{restriction}    <-- Who can execute the function 
@@ -155,8 +157,8 @@ async def loot_fgwp(update:Update, context:ContextTypes.DEFAULT_TYPE, data: dict
 @wr.personal
 @wr.owner
 @log_wrapper
-async def pull_claimed(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
-    ''' usage: /pull_claimed ¿[type]? [key] --- Get info of all/[key]-named looted offers within [type] offers '''
+async def pull_claimed_igl(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict) -> None:
+    ''' Usage: /pull_claimed_igl ¿[type]? [key] --- Get info of all/[key]-named looted offers within [type] offers '''
 
     from pull import pull_orders_info
     context.user_data['find_key'] = None
@@ -216,7 +218,7 @@ async def pull_menu_keyboard():
 # Callback Handlers
 @log_wrapper
 async def pull_loot_menu_iGL(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    '''  '''
+    ''' asfd '''
     from pull import pull_orders_info
 
     context.user_data['find_key'] = None
@@ -234,3 +236,29 @@ async def pull_loot_menu_iGL(update:Update, context:ContextTypes.DEFAULT_TYPE):
                 text=context.user_data['message'],
                 parse_mode='MarkdownV2'
             )
+
+__callbackqueryfunctions__['iGL'] = pull_loot_menu_iGL
+
+@log_wrapper
+async def pull_loot_menu_G(update:Update, context:ContextTypes.DEFAULT_TYPE):
+    ''' asdf '''
+    from pull import pull_orders_info
+
+    context.user_data['find_key'] = None
+    if context.args: context.user_data['find_key'] = context.args[0]
+
+    # await pull_orders_info(key = context.user_data['find_key'])
+    with open('app/data/loot_fgwp.log','r') as f: messages = ''.join(f.readlines())
+    # messages = messages.split('\n\n')
+    messages = messages.split('\n')
+    # if context.user_data['find_key']: messages = (message for message in messages if context.user_data['find_key'] in message.split('\n')[0])
+
+    for context.user_data['message'] in messages:
+        if context.user_data['message']:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=context.user_data['message'],
+                parse_mode='MarkdownV2'
+            )
+
+__callbackqueryfunctions__['G'] = pull_loot_menu_G

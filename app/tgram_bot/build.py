@@ -2,7 +2,7 @@ import asyncio
 from telegram import Update, BotCommand, Bot
 from telegram.ext import ApplicationBuilder, \
     ContextTypes, Application, \
-    CommandHandler, MessageHandler
+    CommandHandler, MessageHandler, CallbackQueryHandler
 
 from os import environ as env
 from functools import partial
@@ -11,7 +11,7 @@ import logging
 log = logging.getLogger('tgram_bot.build.py')
 log.setLevel(logging.INFO)
 
-def app(functions: dict) -> Application:
+def app(commandhandlers: dict, querycallbackhandlers: dict) -> Application:
     TOKEN = env['TGRAM_TOKEN']
     
     try: app = ApplicationBuilder().token(TOKEN).build()
@@ -31,7 +31,7 @@ def app(functions: dict) -> Application:
     }
 
     log.info('Initializing CommandHandlers ...')
-    for key,value in zip(functions.keys(),functions.values()):
+    for key,value in zip(commandhandlers.keys(),commandhandlers.values()):
         # CommandHandlers inicialization
         value_h = partial(value,data=options)
         app.add_handler(CommandHandler(key,value_h))
@@ -41,12 +41,15 @@ def app(functions: dict) -> Application:
         functions = dict(sorted(functions.items()))
         for key,value in functions.items():
             commands.append(BotCommand(key,value.__doc__))
-        
         async with app: await app.bot.set_my_commands(commands)
+
+    log.info('Initializing QueryCallbackHandlers')
+    for key,value in querycallbackhandlers.items():
+        app.add_handler(CallbackQueryHandler(value, pattern=key))
 
     log.info('Setting Command List ...')
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(bot_set_commands(app,functions))
+    loop.run_until_complete(bot_set_commands(app,functions= commandhandlers))
 
     return app
 

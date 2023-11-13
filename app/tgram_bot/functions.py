@@ -192,6 +192,8 @@ async def log_file(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -
         document=context.user_data['document']
     )
 
+@wr.personal
+@wr.owner
 @log_wrapper
 async def pull_loot(update: Update, context:ContextTypes.DEFAULT_TYPE, *args, **kwargs):
     ''' Usage: /pull_loot --- pull menu display '''
@@ -213,4 +215,22 @@ async def pull_menu_keyboard():
 
 # Callback Handlers
 @log_wrapper
-async def pull_loot_menu_iGL(): ...
+async def pull_loot_menu_iGL(update:Update, context:ContextTypes.DEFAULT_TYPE):
+    '''  '''
+    from pull import pull_orders_info
+
+    context.user_data['find_key'] = None
+    if context.args: context.user_data['find_key'] = context.args[0]
+
+    await pull_orders_info(key = context.user_data['find_key'])
+    with open('app/data/pull.log','r') as f: messages = ''.join(f.readlines())
+    messages = messages.split('\n\n')
+    # if context.user_data['find_key']: messages = (message for message in messages if context.user_data['find_key'] in message.split('\n')[0])
+
+    for context.user_data['message'] in messages:
+        if context.user_data['message']:
+            await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=context.user_data['message'],
+                parse_mode='MarkdownV2'
+            )

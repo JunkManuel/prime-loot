@@ -65,7 +65,9 @@ def get_bot():
 app = get_app()
 loop = asyncio.get_event_loop()
 
-    
+from telegram.ext import CallbackQueryHandler
+app.add_handler(CallbackQueryHandler(funcs.pull_loot_menu_iGL, pattern='iGL'))
+
 log.info("Starting ...")
 loop.run_until_complete(send_starting(get_bot()))
 

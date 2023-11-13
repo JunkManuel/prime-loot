@@ -197,8 +197,9 @@ async def log_file(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -
 @wr.personal
 @wr.owner
 @log_wrapper
-async def pull_loot(update: Update, context:ContextTypes.DEFAULT_TYPE, *args, **kwargs):
+async def pull_loot(update: Update, context:ContextTypes.DEFAULT_TYPE, data:dict) -> None:
     ''' Usage: /pull_loot --- pull menu display '''
+    context.bot_data['data'] = data.copy()
     await update.message.reply_text(
                             text=await pull_menu_message(),
                             reply_markup=await pull_menu_keyboard()
@@ -215,10 +216,10 @@ async def pull_menu_keyboard():
             [InlineKeyboardButton('Games', callback_data='G')]]
     return InlineKeyboardMarkup(keyboard)
 
-# Callback Handlers
+# Callback Query Functions
 @log_wrapper
 async def pull_loot_menu_iGL(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    ''' asfd '''
+    '''  '''
     from pull import pull_orders_info
 
     context.user_data['find_key'] = None
@@ -241,7 +242,7 @@ __callbackqueryfunctions__['iGL'] = pull_loot_menu_iGL
 
 @log_wrapper
 async def pull_loot_menu_G(update:Update, context:ContextTypes.DEFAULT_TYPE):
-    ''' asdf '''
+    '''  '''
     from pull import pull_orders_info
 
     context.user_data['find_key'] = None
@@ -257,7 +258,7 @@ async def pull_loot_menu_G(update:Update, context:ContextTypes.DEFAULT_TYPE):
         if context.user_data['message']:
             await context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=context.user_data['message'],
+                text=context.user_data['message'].translate(context.bot_data['data']['trans_table']),
                 parse_mode='MarkdownV2'
             )
 

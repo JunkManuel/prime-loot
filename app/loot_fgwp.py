@@ -67,7 +67,8 @@ async def main(cookies_file: 'file'):
         for item in data['data']['Games']['items']:
             for offer in item['offers']:
                 if offer['offerSelfConnection']['eligibility']['isClaimed'] :
-                    log.info(f"*{item['game']['assets']['title']}* is already Claimed")
+                    ...
+                    # log.info(f"*{item['game']['assets']['title']}* is already Claimed")
                 else: offers_id.append(offer['id'])
 
         await asyncio.gather(

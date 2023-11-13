@@ -1,4 +1,4 @@
-from telegram import Update, Bot
+from telegram import Update, Bot, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import error as t_error
 from telegram.ext import ContextTypes
 import tgram_bot.functions_wraps as wr
@@ -54,11 +54,15 @@ def log_wrapper(f):
     return wrap
 
 
+# ------------------------------------------------------------------------------------------------------------
+
 # Tha real functions
 # Struct: 
 #   @wr.{restriction}    <-- Who can execute the function 
 #   @log_wrapper        <-- Predifined common loggin info
 #   async def {fname}(update: Update, context:ContextTypes.DEFAULT_TYPE,data: dict): 
+
+# Command Handlers
 
 @wr.personal
 # @wr.unrestricted
@@ -187,3 +191,26 @@ async def log_file(update:Update, context:ContextTypes.DEFAULT_TYPE,data:dict) -
         chat_id=update.effective_chat.id,
         document=context.user_data['document']
     )
+
+@log_wrapper
+async def pull_loot(update: Update, context:ContextTypes.DEFAULT_TYPE, *args, **kwargs):
+    ''' Usage: /pull_loot --- pull menu display '''
+    await update.message.reply_text(
+                            text=await pull_menu_message(),
+                            reply_markup=await pull_menu_keyboard()
+    )
+
+# ------------------------------------------------------------------------------------------------------------
+# Menu callback functions
+
+async def pull_menu_message():
+    return 'Select the type of loot you want to check'
+
+async def pull_menu_keyboard():
+    keyboard = [[InlineKeyboardButton('inGameLoot', callback_data='iGL')],
+            [InlineKeyboardButton('Games', callback_data='G')]]
+    return InlineKeyboardMarkup(keyboard)
+
+# Callback Handlers
+@log_wrapper
+async def pull_loot_menu_iGL(): ...

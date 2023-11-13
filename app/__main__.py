@@ -54,7 +54,7 @@ async def send_warning_message(bot: build.Application):
 
 def get_app():
     def iscommand(f):
-        return isfunction(f) and ('wrapper' not in f.__name__)
+        return isfunction(f) and ('wrapper' not in f.__name__) and ('menu' not in f.__name__)
     
     functions = dict(getmembers(funcs,iscommand))
     return build.app(functions)
